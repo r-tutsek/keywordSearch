@@ -219,13 +219,12 @@
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\YoutubeApiController.cs" />
     <Compile Include="Controllers\YoutubeController.cs" />
-    <Compile Include="Entities\YoutubeSearchLogContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\YoutubeResponse.cs" />
-    <Compile Include="Models\YoutubeSearchLog.cs" />
     <Compile Include="Models\YoutubeVideo.cs" />
+    <Compile Include="Models\YoutubeVideoSearchResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -306,6 +305,16 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\keywordSearchEntity\keywordSearchEntity.csproj">
+      <Project>{55d26d47-4ad1-485c-b42c-063b67aabf75}</Project>
+      <Name>keywordSearchEntity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\keywordSearchService\keywordSearchService.csproj">
+      <Project>{457c024a-ba89-4192-bd9e-5b21b9024157}</Project>
+      <Name>keywordSearchService</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

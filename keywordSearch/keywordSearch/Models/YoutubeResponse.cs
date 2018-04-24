@@ -7,9 +7,9 @@ namespace keywordSearch.Models
 {
     public class YoutubeResponse
     {
-        public string baseUrl { get; set; }
-        public string thumbnailUrl { get; set; }
-        public string thumbnailDefaultImage { get; set; }
-        public List<YoutubeVideo> videos { get; set; }
+        public string BaseUrl { get; set; }
+        public string ThumbnailUrl { get; set; }
+        public string ThumbnailDefaultImage { get; set; }
+        public List<YoutubeVideo> Videos { get; set; }
     }
 }

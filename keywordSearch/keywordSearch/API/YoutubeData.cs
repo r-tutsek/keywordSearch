@@ -17,7 +17,7 @@ namespace keywordSearch.API
 {
     public class YoutubeData
     {
-        public async Task<List<YoutubeVideo>> Run(String keyword)
+        public async Task<YoutubeVideoSearchResult> Run(String keyword)
         {
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
@@ -31,9 +31,9 @@ namespace keywordSearch.API
 
             // Call the search.list method to retrieve results matching the specified query term.
             var searchListResponse = await searchListRequest.ExecuteAsync();
-
+            
             var videos = new List<YoutubeVideo>();
-          
+
             // Add each result to the appropriate list, and then display the lists of
             // matching videos, channels, and playlists.
             foreach (var searchResult in searchListResponse.Items)
@@ -41,15 +41,23 @@ namespace keywordSearch.API
                 switch (searchResult.Id.Kind)
                 {
                     case "youtube#video":
-                        var youtubeVideo = new YoutubeVideo();
-                        youtubeVideo.Id = searchResult.Id.VideoId;
-                        youtubeVideo.Title = searchResult.Snippet.Title;
-                        youtubeVideo.Description = searchResult.Snippet.Description;
+                        var youtubeVideo = new YoutubeVideo
+                        {
+                            Id = searchResult.Id.VideoId,
+                            Title = searchResult.Snippet.Title,
+                            Description = searchResult.Snippet.Description
+                        };
                         videos.Add(youtubeVideo);
-                        break;                   
+                        break;
                 }
             }
-            return videos;
+
+            var youtubeVideoSearchResult = new YoutubeVideoSearchResult
+            {
+                YoutubeVideos = videos,
+                TotalResults = searchListResponse.PageInfo.TotalResults.Value
+            };
+            return youtubeVideoSearchResult;
         }
     }
 }

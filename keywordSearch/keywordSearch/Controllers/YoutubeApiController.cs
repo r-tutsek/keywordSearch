@@ -1,5 +1,4 @@
 ﻿using keywordSearch.API;
-using keywordSearch.Entities;
 using keywordSearch.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using keywordSearchService;
+using keywordSearchEntity.Entity;
 
 namespace keywordSearch.Controllers
 {
@@ -17,29 +18,26 @@ namespace keywordSearch.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> SearchAsync(String queryStr)
         {
-            var youtubeResponse = new YoutubeResponse();
-            youtubeResponse.baseUrl = "https://www.youtube.com/embed";
-            youtubeResponse.thumbnailUrl = "https://img.youtube.com/vi";
-            youtubeResponse.thumbnailDefaultImage = "mqdefault.jpg";
+            var youtubeResponse = new YoutubeResponse
+            {
+                BaseUrl = "https://www.youtube.com/embed",
+                ThumbnailUrl = "https://img.youtube.com/vi",
+                ThumbnailDefaultImage = "mqdefault.jpg"
+            };
             try
             {
-                youtubeResponse.videos = await new YoutubeData().Run(queryStr);
-                using (var db = new YoutubeSearchLogContext())
+                var youtubeDataSearchResult = await new YoutubeData().Run(queryStr);
+                youtubeResponse.Videos = youtubeDataSearchResult.YoutubeVideos;
+
+                var youtubeSearchLog = new YoutubeSearchLog
                 {
-                    var youtubeSearchLog = new YoutubeSearchLog();
-                    youtubeSearchLog.searchedKeyword = queryStr;
-                    youtubeSearchLog.searchDateTime = DateTime.Now;
-                    db.youtubeSearchLogs.Add(youtubeSearchLog);
-                    db.SaveChanges();
+                    SearchDateTime = DateTime.Now,
+                    SearchedKeyword = queryStr,
+                    SearchTotalResults = youtubeDataSearchResult.TotalResults
+                };
 
-                    var query = from l in db.youtubeSearchLogs orderby l.searchDateTime select l;
-
-                    Debug.WriteLine("All logs in the database:");
-                    foreach (var item in query)
-                    {
-                        Debug.WriteLine(item.searchDateTime+" "+ item.searchedKeyword);
-                    }
-                }
+                var youtubeSearchLogService = new YoutubeSearchLogService();
+                youtubeSearchLogService.AddLog(youtubeSearchLog);
             }
             catch (Exception ex)
             {

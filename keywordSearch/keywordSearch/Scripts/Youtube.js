@@ -40,13 +40,13 @@
                     $("#youtubeSearchBtn").attr("disabled", true);
                 },
                 success: function (data) {
-                    if (data.videos != null) {
-                        baseUrl = data.baseUrl;
-                        thumbnailUrl = data.thumbnailUrl;
-                        thumbnailDefaultImage = data.thumbnailDefaultImage;
+                    if (data.Videos != null) {
+                        baseUrl = data.BaseUrl;
+                        thumbnailUrl = data.ThumbnailUrl;
+                        thumbnailDefaultImage = data.ThumbnailDefaultImage;
 
                         $("#youtubeSearchResults").html("");
-                        $.each(data.videos, function (index, obj) {
+                        $.each(data.Videos, function (index, obj) {
                             $("#youtubeSearchResults").append(getVideoStruct(obj.Id, obj.Title, obj.Description));
                         });
                     }
@@ -74,7 +74,6 @@
         struct += '<div class="youtubeVideoDescription">' + videoDescription + '</div>';
         struct += '</div>';
         struct += '</div>';
-        console.log(struct);
         return struct;
     }
     function showVideoModal(videoId) {
