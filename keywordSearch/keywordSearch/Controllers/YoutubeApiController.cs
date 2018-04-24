@@ -13,20 +13,23 @@ namespace keywordSearch.Controllers
 {
     public class YoutubeApiController : ApiController
     {
-        private List<YoutubeVideo> youtubeVideos;
-
         [HttpGet]
         public async Task<IHttpActionResult> SearchAsync(String queryStr)
         {
+            var youtubeResponse = new YoutubeResponse();
+            youtubeResponse.baseUrl = "https://www.youtube.com/embed";
+            youtubeResponse.thumbnailUrl = "https://img.youtube.com/vi";
+            youtubeResponse.thumbnailDefaultImage = "mqdefault.jpg";
             try
             {
-                youtubeVideos = await new YoutubeData().Run(queryStr);
+                youtubeResponse.videos = await new YoutubeData().Run(queryStr);
+
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }
-            return Ok(youtubeVideos);
+            return Ok(youtubeResponse);
         }
     }
 }

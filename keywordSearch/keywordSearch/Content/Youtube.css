@@ -16,3 +16,26 @@
 .youtubeSearchResults {
     width:100%;
 }
+
+.youtubeThumbnailImage {
+    width:100%;
+}
+
+.youtubeThumbnailImageContainer {
+    padding: 5px !important;    
+}
+
+.youtubeThumbnailImageHolder {
+    border:1px solid #000;
+}
+
+.youtubeVideoTitle {
+    height: 25px;
+    overflow: hidden;
+    line-height: 25px;
+    padding-left:5px;
+    padding-right:5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background-color:wheat;
+}
