@@ -1,4 +1,5 @@
 ﻿using keywordSearch.API;
+using keywordSearch.Entities;
 using keywordSearch.Models;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,22 @@ namespace keywordSearch.Controllers
             try
             {
                 youtubeResponse.videos = await new YoutubeData().Run(queryStr);
+                using (var db = new YoutubeSearchLogContext())
+                {
+                    var youtubeSearchLog = new YoutubeSearchLog();
+                    youtubeSearchLog.searchedKeyword = queryStr;
+                    youtubeSearchLog.searchDateTime = DateTime.Now;
+                    db.youtubeSearchLogs.Add(youtubeSearchLog);
+                    db.SaveChanges();
 
+                    var query = from l in db.youtubeSearchLogs orderby l.searchDateTime select l;
+
+                    Debug.WriteLine("All logs in the database:");
+                    foreach (var item in query)
+                    {
+                        Debug.WriteLine(item.searchDateTime+" "+ item.searchedKeyword);
+                    }
+                }
             }
             catch (Exception ex)
             {

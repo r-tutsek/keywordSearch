@@ -27,6 +27,10 @@ namespace keywordSearch
 
             bundles.Add(new ScriptBundle("~/Youtube/js").Include(
                     "~/Scripts/youtube.js"));
+
+            bundles.Add(new StyleBundle("~/Fontawesome/css").Include(
+                     "~/Content/font-awesome.css"
+                ));
         }
     }
 }
