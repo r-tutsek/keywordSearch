@@ -12,12 +12,17 @@ namespace keywordSearchService
     public class YoutubeSearchLogService : IYoutubeSearchLogService
     {
         private bool disposed = false;
+        private readonly IYoutubeSearchLogRepository _youtubeSearchLogRepository;
+
+        public YoutubeSearchLogService(IYoutubeSearchLogRepository youtubeSearchLogRepository)
+        {
+            this._youtubeSearchLogRepository = youtubeSearchLogRepository;
+        }
 
         public void AddLog(YoutubeSearchLog youtubeSearchLog)
         {
-            var youtubeSearchLogRepo = new YoutubeSearchLogRepository();
-            youtubeSearchLogRepo.InsertLog(youtubeSearchLog);
-            youtubeSearchLogRepo.Save();
+            _youtubeSearchLogRepository.InsertLog(youtubeSearchLog);
+            _youtubeSearchLogRepository.Save();
         }       
     }
 }

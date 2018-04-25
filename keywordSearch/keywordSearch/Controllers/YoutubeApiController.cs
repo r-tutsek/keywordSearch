@@ -17,6 +17,13 @@ namespace keywordSearch.Controllers
 {
     public class YoutubeApiController : ApiController
     {
+        private readonly IYoutubeSearchLogService _youtubeSearchService;
+
+        public YoutubeApiController(IYoutubeSearchLogService youtubeSearchService)
+        {
+            this._youtubeSearchService = youtubeSearchService;
+        }
+
         [HttpGet]
         public async Task<IHttpActionResult> SearchAsync(String queryStr)
         {
@@ -38,11 +45,7 @@ namespace keywordSearch.Controllers
                     SearchTotalResults = youtubeDataSearchResult.TotalResults
                 };
 
-                var builder = new ContainerBuilder();
-                builder.RegisterType<YoutubeSearchLogService>().As<IYoutubeSearchLogService>();
-
-                var container = builder.Build();
-                container.Resolve<IYoutubeSearchLogService>().AddLog(youtubeSearchLog);
+                _youtubeSearchService.AddLog(youtubeSearchLog);
             }
             catch (Exception ex)
             {
