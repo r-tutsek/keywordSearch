@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using keywordSearchService;
 using keywordSearchEntity.Entity;
+using Autofac;
+using keywordSearchService.Service;
 
 namespace keywordSearch.Controllers
 {
@@ -36,8 +38,11 @@ namespace keywordSearch.Controllers
                     SearchTotalResults = youtubeDataSearchResult.TotalResults
                 };
 
-                var youtubeSearchLogService = new YoutubeSearchLogService();
-                youtubeSearchLogService.AddLog(youtubeSearchLog);
+                var builder = new ContainerBuilder();
+                builder.RegisterType<YoutubeSearchLogService>().As<IYoutubeSearchLogService>();
+
+                var container = builder.Build();
+                container.Resolve<IYoutubeSearchLogService>().AddLog(youtubeSearchLog);
             }
             catch (Exception ex)
             {
