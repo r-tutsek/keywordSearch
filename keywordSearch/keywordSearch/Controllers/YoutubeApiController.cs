@@ -78,14 +78,6 @@ namespace keywordSearch.Controllers
                     SearchTotalResults = youtubeDataSearchResult.TotalResults
                 };
 
-
-                /*var assembly = Assembly.Load(searchRequest.NamespaceName);
-                var type = assembly.GetType(searchRequest.NamespaceName + "." + searchRequest.ClassName);
-                var youtubeSearchServiceObj = Activator.CreateInstance(type, this._youtubeSearchRepository);
-
-                var method = type.GetMethod(searchRequest.MethodName);
-                method.Invoke(youtubeSearchServiceObj, new YoutubeResponse[] { youtubeResponse });*/
-
                 var assembly = Assembly.Load(searchRequest.NamespaceName);
                 var type = assembly.GetType(searchRequest.NamespaceName + "." + searchRequest.ClassName);
 

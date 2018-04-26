@@ -25,8 +25,12 @@ namespace keywordSearch
                       "~/Content/site.css",
                       "~/Content/youtube.css"));
 
+            bundles.Add(new ScriptBundle("~/Angular/js").Include(
+                    "~/Scripts/angular.min.js"));
+
             bundles.Add(new ScriptBundle("~/Youtube/js").Include(
-                    "~/Scripts/youtube.js"));
+                    //"~/Scripts/youtube.js",
+                    "~/Scripts/youtubeAngular.js"));
 
             bundles.Add(new StyleBundle("~/Fontawesome/css").Include(
                      "~/Content/font-awesome.css"
