@@ -2,7 +2,6 @@
 using Autofac.Integration.WebApi;
 using keywordSearchData.DAL;
 using keywordSearchService;
-using keywordSearchService.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;

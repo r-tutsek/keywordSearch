@@ -29,10 +29,14 @@
         }
     });
     function searchYoutubeVideo() {
-        var searchQuery = $("#youtubeSearchInput").val();
-        if (typeof searchQuery != "undefined" && searchQuery != "") {
+        var keyword = $("#youtubeSearchInput").val();
+        if (typeof keyword != "undefined" && keyword != "") {
+            var dataToSend = { "Keyword": keyword, "NamespaceName": "keywordSearchService", "ClassName": "YoutubeSearchLogService", "MethodName": "AddLog" };
             $.ajax({
-                url: "/api/YoutubeApi/Search?queryStr=" + searchQuery,
+                url: "/api/YoutubeApi/SearchAsyncPost",
+                type: "POST",
+                data: JSON.stringify(dataToSend),
+                contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 beforeSend: function (xhr, data) {
                     $("#youtubeSearchResults").html("Searching please wait...");

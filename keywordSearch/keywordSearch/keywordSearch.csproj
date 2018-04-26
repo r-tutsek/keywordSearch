@@ -230,6 +230,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\YoutubeResponse.cs" />
+    <Compile Include="Models\YoutubeSearchRequest.cs" />
     <Compile Include="Models\YoutubeVideo.cs" />
     <Compile Include="Models\YoutubeVideoSearchResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

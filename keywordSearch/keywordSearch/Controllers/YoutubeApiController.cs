@@ -11,17 +11,20 @@ using System.Web.Http;
 using keywordSearchService;
 using keywordSearchEntity.Entity;
 using Autofac;
-using keywordSearchService.Service;
+using System.Reflection;
+using keywordSearchData.DAL;
 
 namespace keywordSearch.Controllers
 {
     public class YoutubeApiController : ApiController
     {
         private readonly IYoutubeSearchLogService _youtubeSearchService;
+        private readonly IYoutubeSearchLogRepository _youtubeSearchRepository;
 
-        public YoutubeApiController(IYoutubeSearchLogService youtubeSearchService)
+        public YoutubeApiController(IYoutubeSearchLogService youtubeSearchService, IYoutubeSearchLogRepository youtubeSearchRepository)
         {
             this._youtubeSearchService = youtubeSearchService;
+            this._youtubeSearchRepository = youtubeSearchRepository;
         }
 
         [HttpGet]
@@ -52,6 +55,51 @@ namespace keywordSearch.Controllers
                 Debug.WriteLine(ex);
             }
             return Ok(youtubeResponse);
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> SearchAsyncPost(YoutubeSearchRequest searchRequest)
+        {
+            var youtubeResponse = new YoutubeResponse
+            {
+                BaseUrl = "https://www.youtube.com/embed",
+                ThumbnailUrl = "https://img.youtube.com/vi",
+                ThumbnailDefaultImage = "mqdefault.jpg"
+            };
+            try
+            {
+                var youtubeDataSearchResult = await new YoutubeData().Run(searchRequest.Keyword);
+                youtubeResponse.Videos = youtubeDataSearchResult.YoutubeVideos;
+
+                var youtubeSearchLog = new YoutubeSearchLog
+                {
+                    SearchDateTime = DateTime.Now,
+                    SearchedKeyword = searchRequest.Keyword,
+                    SearchTotalResults = youtubeDataSearchResult.TotalResults
+                };
+
+
+                /*var assembly = Assembly.Load(searchRequest.NamespaceName);
+                var type = assembly.GetType(searchRequest.NamespaceName + "." + searchRequest.ClassName);
+                var youtubeSearchServiceObj = Activator.CreateInstance(type, this._youtubeSearchRepository);
+
+                var method = type.GetMethod(searchRequest.MethodName);
+                method.Invoke(youtubeSearchServiceObj, new YoutubeResponse[] { youtubeResponse });*/
+
+                var assembly = Assembly.Load(searchRequest.NamespaceName);
+                var type = assembly.GetType(searchRequest.NamespaceName + "." + searchRequest.ClassName);
+
+                var constructor = type.GetConstructor(new Type[] { typeof(YoutubeSearchLogRepository) });
+                var classObject = constructor.Invoke(new Object[] { this._youtubeSearchRepository });
+
+                var method = type.GetMethod(searchRequest.MethodName);
+                method.Invoke(classObject, new Object[] { youtubeSearchLog });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            return Ok(youtubeResponse);           
         }
     }
 }

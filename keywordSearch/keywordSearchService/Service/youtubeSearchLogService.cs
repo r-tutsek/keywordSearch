@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using keywordSearchData.DAL;
+﻿using keywordSearchData.DAL;
 using keywordSearchEntity.Entity;
-using keywordSearchService.Service;
 
 namespace keywordSearchService
 {
