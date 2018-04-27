@@ -7,22 +7,22 @@
 <div class="row" ng-app="YoutubeSearchApp">
     <div class="col-md-12" ng-controller="YoutubeSearchController">
         <div class="input-group">
-            <input type="text" id="youtubeSearchInput" name="youtubeSearchInput" class="form-control youtubeSearchInput" placeholder="Enter keyword and press search please..." ng-model="youtubeSearchVal"/>
+            <input type="text" id="youtubeSearchInput" name="youtubeSearchInput" class="form-control youtubeSearchInput" placeholder="Enter keyword and press search please..." ng-model="youtubeSearchVal" ng-keyup="onSearchValKeyup($event)" />
             <div class="input-group-addon youtubeSearchInputGroupAddon">
                 <button type="button" id="youtubeSearchBtn" class="btn btn-primary youtubeSearchBtn" ng-click="btnPostCall()">Search</button>
             </div>
         </div>
-        <div id="youtubeSearchResults" class="youtubeSearchResults" ng-repeat="video in YoutubeVideos" ng-if="YoutubeVideos.length">
+        <div id="youtubeSearchResults" class="youtubeSearchResults ng-cloak" ng-repeat="video in YoutubeVideos">
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 youtubeThumbnailImageContainer">
-                <div class="youtubeThumbnailImageHolder">
-                    <div id="youtubeThumbnailImageBlanker" class="youtubeThumbnailImageBlanker" style="display:none;" data-video-id="{{video.Id}}"><i class="fa fa-youtube-play youtubePlayIcon" aria-hidden="true"></i></div>
+                <div class="youtubeThumbnailImageHolder" ng-mouseenter="onThumbnailImageMouseenter($event)" ng-mouseleave="onThumbnailImageMouseleave($event)" data-video-id="{{video.Id}}">
+                    <div id="youtubeThumbnailImageBlanker" class="youtubeThumbnailImageBlanker ng-hide" ng-show="youtubeThumbnailImageBlankerShow" ng-click="showVideoModal($event)"><i class="fa fa-youtube-play youtubePlayIcon" aria-hidden="true"></i></div>
                     <img ng-src="{{ThumbnailUrl}}/{{video.Id}}/{{ThumbnailDefaultImage}}" class="youtubeThumbnailImage" />
                     <div class="youtubeVideoTitle" title="{{video.Title}}">{{video.Title}}</div>
                     <div class="youtubeVideoDescription">{{video.Description}}</div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 </div>
 <div id="youtubeVideoModal" class="modal fade youtubeVideoModal" role="dialog">
     <div class="modal-dialog youtubeVideoModalDialog">
@@ -31,5 +31,6 @@
         </div>
     </div>
 </div>
+
 
 
