@@ -30,6 +30,9 @@ youtubeSearchModule.controller("YoutubeSearchController", function ($scope, $htt
             angular.element("#youtubeVideoModal").modal("show");
         }      
     };
+    angular.element("#youtubeVideoModal").on("hidden.bs.modal", function () {
+        angular.element("#youtubeVideoFrame").attr("src", "");
+    });
     function postData(url, dataToPost) {
         dataToPost["Keyword"] = $scope.youtubeSearchVal;
         $http.post(url, dataToPost).then(function (success) {
